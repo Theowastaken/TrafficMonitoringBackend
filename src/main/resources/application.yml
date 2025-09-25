@@ -3,10 +3,6 @@ server:
   servlet:
     context-path: /api
 
-file:
-  server-url: http://localhost:5001/api
-  upload-dir: /data/uploads
-
 spring:
   application:
     name: traffic-monitoring-backend

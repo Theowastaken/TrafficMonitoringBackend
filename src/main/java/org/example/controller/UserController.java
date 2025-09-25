@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.ibatis.annotations.Options;
 import org.example.common.result.Result;
 import org.example.dto.user.UserLoginDto;
 import org.example.dto.user.UserQueryDto;
