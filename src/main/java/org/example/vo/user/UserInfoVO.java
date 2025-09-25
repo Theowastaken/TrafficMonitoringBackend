@@ -51,7 +51,22 @@ public class UserInfoVO {
     private String avatarUrl;
 
     /**
+     * 头像Bucket
+     */
+    private String avatarBucket;
+
+    /**
+     * 头像文件名
+     */
+    private String avatarObjectKey;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
 }

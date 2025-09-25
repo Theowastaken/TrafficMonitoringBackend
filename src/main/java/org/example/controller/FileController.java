@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/file")
 @AllArgsConstructor
+@PreAuthorize("isAuthenticated()")
 public class FileController {
 
     private final LocalStorageService localStorageService;
@@ -23,16 +25,19 @@ public class FileController {
     /**
      * 上传文件
      *
-     * @param bucket 存储桶名称
-     * @param file   文件
+     * @param bucket  存储桶名称
+     * @param file    文件
+     * @param isCache 是否为缓存文件
      * @return 上传结果
      */
-    @PostMapping("/{bucket}")
+    @PostMapping("/upload/{bucket}")
     public Result<FileUploadResponse> upload(
             @PathVariable String bucket,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "is_cache", defaultValue = "false") boolean isCache
+    ) {
         try {
-            String objectKey = localStorageService.saveFile(file, bucket);
+            String objectKey = localStorageService.saveFile(file, bucket, isCache);
 
             FileUploadResponse response = new FileUploadResponse();
             response.setBucket(bucket);

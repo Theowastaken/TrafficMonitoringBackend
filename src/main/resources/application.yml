@@ -3,6 +3,10 @@ server:
   servlet:
     context-path: /api
 
+upload:
+  base-dir: data/uploads
+  base-url: http://localhost:${server.port}${server.servlet.context-path}
+
 spring:
   application:
     name: traffic-monitoring-backend

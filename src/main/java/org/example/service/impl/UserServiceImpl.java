@@ -39,7 +39,13 @@ public class UserServiceImpl implements UserService {
     
     @Value("${jwt.expiration}")
     private Long jwtExpiration;
-    
+
+    @Value("${upload.base-url:http://localhost:9090/api}")
+    private String baseFileUrl;
+
+    @Autowired
+    private LocalStorageServiceImpl localStorageServiceImpl;
+
     @Override
     public String login(UserLoginDto loginDto) {
         // 查询用户
@@ -194,6 +200,9 @@ public class UserServiceImpl implements UserService {
         if (userMapper.selectCount(wrapper) > 0) {
             throw new RuntimeException("用户名已存在");
         }
+
+        // 更新头像URL
+        user.setAvatarUrl(baseFileUrl + localStorageServiceImpl.getFileUrl(user.getAvatarBucket(), user.getAvatarObjectKey()));
         
         user.setUpdateTime(LocalDateTime.now());
         userMapper.updateById(user);
