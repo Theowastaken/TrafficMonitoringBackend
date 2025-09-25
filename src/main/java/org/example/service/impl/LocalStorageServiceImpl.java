@@ -35,7 +35,7 @@ public class LocalStorageServiceImpl implements LocalStorageService {
         String extension = originalFilename != null && originalFilename.contains(".")
                 ? originalFilename.substring(originalFilename.lastIndexOf("."))
                 : "";
-        String objectKey = UUID.randomUUID().toString() + extension;
+        String objectKey = UUID.randomUUID() + extension;
 
         Path destinationFile = bucketPath.resolve(objectKey);
         Files.copy(file.getInputStream(), destinationFile);
