@@ -1,6 +1,6 @@
-# 交通监控后端系统
+# 智能交通监控后端系统
 
-这是一个基于Spring Boot + MyBatis-Plus + MySQL的交通监控后端系统，对应前端的Vue.js应用。
+这是一个基于Spring Boot + MyBatis-Plus + MySQL的智能交通监控后端系统，对应前端的Vue.js应用。
 
 ## 项目结构
 
