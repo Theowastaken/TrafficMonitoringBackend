@@ -20,6 +20,10 @@ public class LocalStorageServiceImpl implements LocalStorageService {
     @Value("${upload.base-dir:data/uploads}")
     private String baseDir;
 
+    @Value("${upload.base-url:http://localhost:9090/api}")
+    private String baseFileUrl;
+
+
     @Override
     public String saveFile(MultipartFile file, String bucket, boolean isCache) throws IOException {
         if (bucket == null || bucket.trim().isEmpty() || bucket.contains("..")) {
@@ -53,6 +57,28 @@ public class LocalStorageServiceImpl implements LocalStorageService {
     }
 
     @Override
+    public String saveFile(byte[] data, String bucket, String fileName) throws IOException {
+        if (bucket == null || bucket.trim().isEmpty() || bucket.contains("..")) {
+            throw new IllegalArgumentException("Invalid bucket name.");
+        }
+
+        Path bucketPath = Paths.get(baseDir, bucket);
+        if (!Files.exists(bucketPath)) {
+            Files.createDirectories(bucketPath);
+        }
+
+        String extension = fileName != null && fileName.contains(".")
+                ? fileName.substring(fileName.lastIndexOf("."))
+                : "";
+        String objectKey = UUID.randomUUID() + extension;
+
+        Path destinationFile = bucketPath.resolve(objectKey);
+        Files.write(destinationFile, data);
+
+        return objectKey;
+    }
+
+    @Override
     public Resource loadFileAsResource(String bucket, String objectKey) {
         try {
             Path filePath = Paths.get(baseDir, bucket, objectKey);
@@ -75,6 +101,6 @@ public class LocalStorageServiceImpl implements LocalStorageService {
 
     @Override
     public String getFileUrl(String bucket, String objectKey) {
-        return String.format("/file/%s/%s", bucket, objectKey);
+        return String.format("%s/file/%s/%s",baseFileUrl, bucket, objectKey);
     }
 }

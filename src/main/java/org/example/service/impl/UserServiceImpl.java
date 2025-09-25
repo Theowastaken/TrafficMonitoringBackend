@@ -40,9 +40,6 @@ public class UserServiceImpl implements UserService {
     @Value("${jwt.expiration}")
     private Long jwtExpiration;
 
-    @Value("${upload.base-url:http://localhost:9090/api}")
-    private String baseFileUrl;
-
     @Autowired
     private LocalStorageServiceImpl localStorageServiceImpl;
 
@@ -202,7 +199,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // 更新头像URL
-        user.setAvatarUrl(baseFileUrl + localStorageServiceImpl.getFileUrl(user.getAvatarBucket(), user.getAvatarObjectKey()));
+        user.setAvatarUrl(localStorageServiceImpl.getFileUrl(user.getAvatarBucket(), user.getAvatarObjectKey()));
         
         user.setUpdateTime(LocalDateTime.now());
         userMapper.updateById(user);

@@ -32,6 +32,16 @@ public class DetectionRecord {
      * 图片URL
      */
     private String imageUrl;
+
+    /**
+     * 图片存储桶
+     */
+    private String imageBucket;
+
+    /**
+     * 图片对象键
+     */
+    private String imageObjectKey;
     
     /**
      * 检测时间
@@ -57,6 +67,16 @@ public class DetectionRecord {
      * 处理图片URL
      */
     private String processImageUrl;
+
+    /**
+     * 处理图片存储桶
+     */
+    private String processImageBucket;
+
+    /**
+     * 处理图片对象键
+     */
+    private String processImageObjectKey;
     
     /**
      * 处理时间

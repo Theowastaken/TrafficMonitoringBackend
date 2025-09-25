@@ -20,6 +20,16 @@ public interface LocalStorageService {
     String saveFile(MultipartFile file, String bucket, boolean isCache) throws IOException;
 
     /**
+     * 保存文件
+     *
+     * @param data     文件字节数组
+     * @param bucket   存储桶
+     * @param fileName 文件名
+     * @return 文件名 (ObjectKey)
+     */
+    String saveFile(byte[] data, String bucket, String fileName) throws IOException;
+
+    /**
      * 将文件作为资源加载
      *
      * @param bucket    存储桶
