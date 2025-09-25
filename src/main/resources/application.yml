@@ -1,0 +1,61 @@
+server:
+  port: 9090
+  servlet:
+    context-path: /api
+
+file:
+  server-url: http://localhost:5001/api
+  upload-dir: /data/uploads
+
+spring:
+  application:
+    name: traffic-monitoring-backend
+  web:
+    resources:
+      static-locations: file:/data/uploads/
+  
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/traffic_monitoring?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: 123456789.mbcz
+  
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+# MyBatis Plus 配置
+mybatis-plus:
+  configuration:
+    # 驼峰命名转换
+    map-underscore-to-camel-case: true
+    # 开启Mybatis二级缓存
+    cache-enabled: true
+    # 打印SQL
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      # 逻辑删除字段
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      # 主键类型
+      id-type: auto
+  # mapper文件路径
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+# JWT配置
+jwt:
+  secret: trafficMonitoringSecretKey2023ForJWTTokenGeneration
+  expiration: 604800 # 7天，单位秒
+
+# 日志配置
+logging:
+  level:
+    org.example: debug
+    com.baomidou.mybatisplus: debug
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
