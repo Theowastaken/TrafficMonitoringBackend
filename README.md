@@ -44,13 +44,6 @@ src/
 │       ├── schema.sql                              # 数据库结构
 │       └── sql/init.sql                            # 数据库初始化脚本
 ```
-
-data/
-├── uploads/
-│   ├── avatars/                                    # 用户头像
-│   ├── detections/                                 # 检测图片
-│   └── images/                                     # 其他图片，按日期分目录
-
 ## 技术栈
 
 - **Spring Boot 2.7.18** - 主框架
