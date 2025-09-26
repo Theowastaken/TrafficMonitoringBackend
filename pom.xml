@@ -11,9 +11,9 @@
         <relativePath/>
     </parent>
 
-    <groupId>org.example</groupId>
+    <groupId>io.github.Theowastaken</groupId>
     <artifactId>TrafficMonitoringBackend</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>TrafficMonitoringBackend</name>
     <description>Traffic Monitoring Backend Application</description>
 
