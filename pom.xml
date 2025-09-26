@@ -16,7 +16,14 @@
     <version>1.0-SNAPSHOT</version>
     <name>TrafficMonitoringBackend</name>
     <description>Traffic Monitoring Backend Application</description>
-
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/Theowastaken/TrafficMonitoringBackend</url>
+        </repository>
+    </distributionManagement>
+         
     <properties>
         <java.version>18</java.version>
         <maven.compiler.source>18</maven.compiler.source>
