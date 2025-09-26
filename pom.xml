@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>io.github.Theowastaken</groupId>
-    <artifactId>TrafficMonitoringBackend</artifactId>
+    <artifactId>traffic-monitoring-backend</artifactId>
     <version>1.0.0</version>
     <name>TrafficMonitoringBackend</name>
     <description>Traffic Monitoring Backend Application</description>
