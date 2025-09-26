@@ -28,18 +28,28 @@ src/
 │   │       │   └── DetectionRecordMapper.java
 │   │       ├── service/                            # 业务服务层
 │   │       │   ├── UserService.java
-│   │       │   └── impl/UserServiceImpl.java
+│   │       │   ├── LocalStorageService.java        # 文件存储服务
+│   │       │   └── impl/                           # 业务实现类
 │   │       ├── controller/                         # 控制器层
 │   │       │   ├── UserController.java
 │   │       │   ├── CameraController.java
-│   │       │   └── DetectionRecordController.java
+│   │       │   ├── DetectionRecordController.java
+│   │       │   └── FileController.java             # 文件上传接口
 │   │       └── config/                             # 配置类
 │   │           ├── CorsConfig.java                 # 跨域配置
-│   │           └── GlobalExceptionHandler.java    # 全局异常处理
+│   │           ├── GlobalExceptionHandler.java     # 全局异常处理
+│   │           └── SecurityConfig.java             # 安全配置
 │   └── resources/
 │       ├── application.yml                         # 应用配置
-│       └── sql/init.sql                           # 数据库初始化脚本
+│       ├── schema.sql                              # 数据库结构
+│       └── sql/init.sql                            # 数据库初始化脚本
 ```
+
+data/
+├── uploads/
+│   ├── avatars/                                    # 用户头像
+│   ├── detections/                                 # 检测图片
+│   └── images/                                     # 其他图片，按日期分目录
 
 ## 技术栈
 
@@ -70,6 +80,10 @@ src/
 - 检测记录处理状态管理
 - 图片上传和存储
 - 批量删除功能
+
+### 文件上传
+- 图片/头像上传（Base64或文件流）
+- 按日期分目录存储
 
 ## API接口
 
@@ -104,6 +118,10 @@ src/
 - `DELETE /api/detection/record/batch` - 批量删除检测记录
 - `DELETE /api/detection/record/clear-all` - 清空所有检测记录
 
+### 文件接口
+- `POST /api/file/upload` - 图片/文件上传
+- `GET /api/file/download/{filename}` - 文件下载
+
 ## 快速开始
 
 ### 1. 环境要求
@@ -126,15 +144,11 @@ spring:
 ```
 
 ### 4. 运行应用
-```bash
-# 编译项目
+```cmd
 mvn clean compile
-
-# 运行应用
 mvn spring-boot:run
 ```
-
-应用将在 `http://localhost:8080` 启动，API基础路径为 `/api`
+应用将在 `http://localhost:9090` 启动，API基础路径为 `/api`
 
 ### 5. 默认账户
 - 用户名：`admin`
@@ -173,9 +187,10 @@ mvn spring-boot:run
 - Header格式：`Authorization: Bearer {token}`
 
 ### 图片上传
-- 支持Base64格式图片上传
-- 图片保存在 `uploads/images/` 目录下
-- 按日期分目录存储
+- 支持Base64格式图片上传和文件流上传
+- 图片保存在 `data/uploads/images/` 目录下，按日期分目录存储
+- 头像保存在 `data/uploads/avatars/` 目录
+- 检测图片保存在 `data/uploads/detections/` 目录
 
 ## 注意事项
 
