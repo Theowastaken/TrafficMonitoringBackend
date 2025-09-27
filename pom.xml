@@ -13,7 +13,7 @@
 
     <groupId>io.github.Theowastaken</groupId>
     <artifactId>traffic-monitoring-springboot</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <name>TrafficMonitoringBackend</name>
     <description>Traffic Monitoring Backend Application</description>
 
