@@ -9,7 +9,7 @@ upload:
 
 spring:
   application:
-    name: traffic-monitoring-backend
+    name: traffic-monitoring-springboot
   web:
     resources:
       static-locations: file:/data/uploads/
