@@ -72,9 +72,9 @@ CREATE TABLE `detection_record` (
 
 -- 插入初始数据
 
--- 插入默认管理员用户 (密码: admin123)
+-- 插入默认管理员用户 (密码: 123456)
 INSERT INTO `sys_user` (`username`, `password`, `real_name`, `role`, `phone`, `email`, `status`)
-VALUES ('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iKXISwKhwjPiMZcKnDrOhE0FLQ6G', '系统管理员', 1, '13800138000', 'admin@example.com', 1);
+VALUES ('admin', '$2a$12$4Ok0uwH0/NHjcyQFjKh.me6ogBpt6mvutRZXe8Arw8PRhi/YIvEB6', '系统管理员', 1, '13800138000', 'admin@example.com', 1);
 
 -- 插入测试摄像头数据
 INSERT INTO `camera` (`name`, `location`, `ip_address`, user_id, `status`, `description`) VALUES
