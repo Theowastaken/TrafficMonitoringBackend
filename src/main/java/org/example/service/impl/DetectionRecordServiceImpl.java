@@ -92,6 +92,7 @@ public class DetectionRecordServiceImpl implements DetectionRecordService {
         wrapper.orderByDesc("detection_time");
 
         Page<DetectionRecord> recordPage = detectionRecordMapper.selectPage(page, wrapper);
+        recordPage.setTotal(detectionRecordMapper.selectCount(wrapper));
         return new PageVO<>(
                 recordPage.getCurrent(),
                 recordPage.getSize(),

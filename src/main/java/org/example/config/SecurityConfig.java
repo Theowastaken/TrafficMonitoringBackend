@@ -23,7 +23,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // 根据需求调整权限
-                .csrf().disable(); // 如果不需要 CSRF 保护，可以禁用
+                .csrf(csrf -> csrf.disable()); // 如果不需要 CSRF 保护，可以禁用
         return http.build();
     }
 }

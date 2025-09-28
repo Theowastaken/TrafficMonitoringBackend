@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.18</version>
+        <version>3.5.6</version>
         <relativePath/>
     </parent>
 
     <groupId>io.github.Theowastaken</groupId>
     <artifactId>traffic-monitoring-springboot</artifactId>
-    <version>1.0.6</version>
+    <version>1.1.0</version>
     <name>TrafficMonitoringBackend</name>
     <description>Traffic Monitoring Backend Application</description>
 
@@ -22,7 +22,7 @@
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <mybatis-plus.version>3.5.14</mybatis-plus.version>
         <mysql.version>8.3.0</mysql.version>
         <jjwt.version>0.11.5</jjwt.version>
         <hutool.version>5.8.25</hutool.version>
@@ -41,7 +41,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.5.5</version>
         </dependency>
 
         <!-- Spring Boot Starter Validation -->
@@ -66,13 +65,12 @@
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>${mysql.version}</version>
         </dependency>
 
         <!-- MyBatis Plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
             <version>${mybatis-plus.version}</version>
         </dependency>
 
@@ -82,6 +80,10 @@
             <artifactId>jjwt-api</artifactId>
             <version>${jjwt.version}</version>
         </dependency>
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+    </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
@@ -152,8 +154,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
+          <release>${java.version}</release>
                 </configuration>
             </plugin>
         </plugins>

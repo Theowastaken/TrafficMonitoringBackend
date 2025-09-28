@@ -136,7 +136,8 @@ public class UserServiceImpl implements UserService {
         wrapper.orderByDesc("create_time");
         
         Page<User> userPage = userMapper.selectPage(page, wrapper);
-        
+
+        userPage.setTotal(userMapper.selectCount(wrapper));
         // 转换为VO
         List<UserInfoVO> voList = userPage.getRecords().stream()
                 .map(user -> BeanUtil.copyProperties(user, UserInfoVO.class))

@@ -43,7 +43,7 @@ public class FileController {
             response.setBucket(bucket);
             response.setObjectKey(objectKey);
             // 构建可访问的 URL
-            response.setUrl(String.format("/file/%s/%s", bucket, objectKey));
+            response.setUrl("/file/%s/%s".formatted(bucket, objectKey));
 
             return Result.success(response);
         } catch (IOException e) {

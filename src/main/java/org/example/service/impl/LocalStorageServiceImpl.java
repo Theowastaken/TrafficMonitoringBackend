@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
@@ -30,7 +29,7 @@ public class LocalStorageServiceImpl implements LocalStorageService {
             throw new IllegalArgumentException("Invalid bucket name.");
         }
 
-        Path bucketPath = Paths.get(baseDir, bucket);
+        Path bucketPath = Path.of(baseDir, bucket);
         // 如果是缓存文件，则存储在 bucket 下的 cache 目录中
         if (isCache) {
             bucketPath = bucketPath.resolve("cache");
@@ -62,7 +61,7 @@ public class LocalStorageServiceImpl implements LocalStorageService {
             throw new IllegalArgumentException("Invalid bucket name.");
         }
 
-        Path bucketPath = Paths.get(baseDir, bucket);
+        Path bucketPath = Path.of(baseDir, bucket);
         if (!Files.exists(bucketPath)) {
             Files.createDirectories(bucketPath);
         }
@@ -81,7 +80,7 @@ public class LocalStorageServiceImpl implements LocalStorageService {
     @Override
     public Resource loadFileAsResource(String bucket, String objectKey) {
         try {
-            Path filePath = Paths.get(baseDir, bucket, objectKey);
+            Path filePath = Path.of(baseDir, bucket, objectKey);
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists() && resource.isReadable()) {
                 return resource;
@@ -95,12 +94,12 @@ public class LocalStorageServiceImpl implements LocalStorageService {
 
     @Override
     public void deleteFile(String bucket, String objectKey) throws IOException {
-        Path filePath = Paths.get(baseDir, bucket, objectKey);
+        Path filePath = Path.of(baseDir, bucket, objectKey);
         Files.deleteIfExists(filePath);
     }
 
     @Override
     public String getFileUrl(String bucket, String objectKey) {
-        return String.format("%s/file/%s/%s",baseFileUrl, bucket, objectKey);
+        return "%s/file/%s/%s".formatted(baseFileUrl, bucket, objectKey);
     }
 }
