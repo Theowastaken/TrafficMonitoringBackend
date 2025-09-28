@@ -13,6 +13,10 @@ public class CameraVO {
     private Long id;
     /** 摄像头名称 */
     private String name;
+    /** 创建者的用户名 */
+    private String userName;
+    /** 创建者的用户ID */
+    private String userId;
     /** 摄像头位置 */
     private String location;
     /** RTSP流地址 */

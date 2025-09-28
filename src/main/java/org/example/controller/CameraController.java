@@ -2,13 +2,13 @@ package org.example.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.common.result.Result;
+import org.example.dto.camera.CameraQueryDto;
+import org.example.dto.camera.CameraStatusUpdateDto;
 import org.example.entity.Camera;
 import org.example.service.CameraService;
 import org.example.vo.camera.CameraVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 /**
  * 摄像头控制器
@@ -24,14 +24,8 @@ public class CameraController {
      * 分页查询摄像头
      */
     @GetMapping("/page")
-    public Result<Page<CameraVO>> pageCamera(
-            @RequestParam(defaultValue = "1") Integer current,
-            @RequestParam(defaultValue = "10") Integer size,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String location,
-            @RequestParam(required = false) Integer status) {
-
-        Page<CameraVO> cameraPage = cameraService.pageCamera(current, size, name, location, status);
+    public Result<Page<CameraVO>> pageCamera(CameraQueryDto queryDto) {
+        Page<CameraVO> cameraPage = cameraService.pageCamera(queryDto);
         return Result.success(cameraPage);
     }
 
@@ -75,8 +69,8 @@ public class CameraController {
      * 更新摄像头状态
      */
     @PutMapping("/{id}/status")
-    public Result<Void> updateCameraStatus(@PathVariable Long id, @RequestBody Map<String, Integer> params) {
-        Integer status = params.get("status");
+    public Result<Void> updateCameraStatus(@PathVariable Long id, @RequestBody CameraStatusUpdateDto params) {
+        Integer status = params.getStatus();
         cameraService.updateCameraStatus(id, status);
         return Result.success();
     }

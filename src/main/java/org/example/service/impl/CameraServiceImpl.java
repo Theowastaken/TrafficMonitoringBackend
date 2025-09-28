@@ -3,14 +3,19 @@ package org.example.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.example.dto.camera.CameraQueryDto;
 import org.example.entity.Camera;
 import org.example.mapper.CameraMapper;
 import org.example.service.CameraService;
+import org.example.util.JwtTokenProvider;
 import org.example.vo.camera.CameraVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,8 +29,17 @@ public class CameraServiceImpl implements CameraService {
     @Autowired
     private CameraMapper cameraMapper;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @Override
-    public Page<CameraVO> pageCamera(Integer current, Integer size, String name, String location, Integer status) {
+    public Page<CameraVO> pageCamera(CameraQueryDto queryDto) {
+        Integer current = queryDto.getCurrent();
+        Integer size = queryDto.getSize();
+        String name = queryDto.getName();
+        String location = queryDto.getLocation();
+        Integer status = queryDto.getStatus();
+
         Page<Camera> page = new Page<>(current, size);
         QueryWrapper<Camera> wrapper = new QueryWrapper<>();
 
@@ -63,6 +77,18 @@ public class CameraServiceImpl implements CameraService {
 
     @Override
     public Long createCamera(Camera camera) {
+        // 从请求头中解析用户信息
+        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attrs != null ? attrs.getRequest() : null;
+        String token = jwtTokenProvider.resolveToken(request);
+        String userId = jwtTokenProvider.getUserId(token);
+        String username = jwtTokenProvider.getUsername(token);
+        if (!StringUtils.hasText(userId) || !StringUtils.hasText(username)) {
+            throw new RuntimeException("未授权或无效的token");
+        }
+        camera.setUserId(userId);
+        camera.setUserName(username);
+
         camera.setCreateTime(LocalDateTime.now());
         camera.setUpdateTime(LocalDateTime.now());
         cameraMapper.insert(camera);
@@ -99,4 +125,3 @@ public class CameraServiceImpl implements CameraService {
         cameraMapper.updateById(camera);
     }
 }
-

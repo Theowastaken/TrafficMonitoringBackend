@@ -1,6 +1,7 @@
 package org.example.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.example.dto.camera.CameraQueryDto;
 import org.example.entity.Camera;
 import org.example.vo.camera.CameraVO;
 
@@ -11,7 +12,7 @@ public interface CameraService {
     /**
      * 分页查询摄像头
      */
-    Page<CameraVO> pageCamera(Integer current, Integer size, String name, String location, Integer status);
+    Page<CameraVO> pageCamera(CameraQueryDto queryDto);
 
     /**
      * 获取摄像头详情
@@ -38,4 +39,3 @@ public interface CameraService {
      */
     void updateCameraStatus(Long id, Integer status);
 }
-
