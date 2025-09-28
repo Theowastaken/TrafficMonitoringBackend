@@ -74,7 +74,6 @@ public class DetectionRecordServiceImpl implements DetectionRecordService {
 
     @Override
     public PageVO<DetectionRecord> pageDetectionRecords(Integer current, Integer size, Long cameraId, String startTime, String endTime, Integer processed) {
-        Page<DetectionRecord> page = new Page<>(current, size);
         QueryWrapper<DetectionRecord> wrapper = new QueryWrapper<>();
 
         if (cameraId != null) {
@@ -91,8 +90,8 @@ public class DetectionRecordServiceImpl implements DetectionRecordService {
         }
         wrapper.orderByDesc("detection_time");
 
+        Page<DetectionRecord> page = new Page<>(current, size, detectionRecordMapper.selectCount(wrapper));
         Page<DetectionRecord> recordPage = detectionRecordMapper.selectPage(page, wrapper);
-        recordPage.setTotal(detectionRecordMapper.selectCount(wrapper));
         return new PageVO<>(
                 recordPage.getCurrent(),
                 recordPage.getSize(),
