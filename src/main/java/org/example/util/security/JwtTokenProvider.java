@@ -1,4 +1,4 @@
-package org.example.util;
+package org.example.util.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -52,5 +52,10 @@ public class JwtTokenProvider {
     public String getUsername(String token) {
         Claims claims = parseClaims(token);
         return claims == null ? null : claims.get("username", String.class);
+    }
+
+    public Integer getRole(String token) {
+        Claims claims = parseClaims(token);
+        return claims == null ? null : claims.get("role", Integer.class);
     }
 }

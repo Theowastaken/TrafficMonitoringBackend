@@ -4,18 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.dto.camera.CameraQueryDto;
+import org.example.common.context.CurrentUserInfo;
 import org.example.entity.Camera;
 import org.example.mapper.CameraMapper;
 import org.example.service.CameraService;
-import org.example.util.JwtTokenProvider;
 import org.example.vo.camera.CameraVO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,13 +20,33 @@ import java.util.stream.Collectors;
  * 摄像头服务实现类
  */
 @Service
-public class CameraServiceImpl implements CameraService {
+public class CameraServiceImpl extends BaseServiceImpl implements CameraService {
 
-    @Autowired
-    private CameraMapper cameraMapper;
+    private final CameraMapper cameraMapper;
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    public CameraServiceImpl(CameraMapper cameraMapper) {
+        this.cameraMapper = cameraMapper;
+    }
+
+    /**
+     * 转换分页对象
+     * @param sourcePage 源分页对象
+     * @param targetClass 目标类型
+     * @param <S> 源类型
+     * @param <T> 目标类型
+     * @return 转换后的分页对象
+     */
+    private <S, T> Page<T> convertPage(Page<S> sourcePage, Class<T> targetClass) {
+        //TODO: 可以考虑使用更高效的映射工具如MapStruct
+        //      可以将此函数提取到一个公共的工具类中
+        List<T> voList = sourcePage.getRecords().stream()
+                .map(source -> BeanUtil.copyProperties(source, targetClass))
+                .collect(Collectors.toList());
+
+        Page<T> targetPage = new Page<>(sourcePage.getCurrent(), sourcePage.getSize(), sourcePage.getTotal());
+        targetPage.setRecords(voList);
+        return targetPage;
+    }
 
     @Override
     public Page<CameraVO> pageCamera(CameraQueryDto queryDto) {
@@ -57,13 +73,7 @@ public class CameraServiceImpl implements CameraService {
         Page<Camera> cameraPage = cameraMapper.selectPage(page, wrapper);
         cameraPage.setTotal(cameraMapper.selectCount(wrapper));
 
-        List<CameraVO> voList = cameraPage.getRecords().stream()
-                .map(camera -> BeanUtil.copyProperties(camera, CameraVO.class))
-                .collect(Collectors.toList());
-
-        Page<CameraVO> voPage = new Page<>(cameraPage.getCurrent(), cameraPage.getSize(), cameraPage.getTotal());
-        voPage.setRecords(voList);
-        return voPage;
+        return convertPage(cameraPage, CameraVO.class);
     }
 
     @Override
@@ -77,17 +87,10 @@ public class CameraServiceImpl implements CameraService {
 
     @Override
     public Long createCamera(Camera camera) {
-        // 从请求头中解析用户信息
-        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attrs != null ? attrs.getRequest() : null;
-        String token = jwtTokenProvider.resolveToken(request);
-        String userId = jwtTokenProvider.getUserId(token);
-        String username = jwtTokenProvider.getUsername(token);
-        if (!StringUtils.hasText(userId) || !StringUtils.hasText(username)) {
-            throw new RuntimeException("未授权或无效的token");
-        }
-        camera.setUserId(userId);
-        camera.setUserName(username);
+        // 获取当前用户信息 - 现在可以直接使用父类的方法
+        CurrentUserInfo currentUser = getCurrentUser();
+        camera.setUserId(currentUser.getUserId());
+        camera.setUserName(currentUser.getUsername());
 
         camera.setCreateTime(LocalDateTime.now());
         camera.setUpdateTime(LocalDateTime.now());
